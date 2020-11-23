@@ -110,7 +110,7 @@ func NewZapLog(level string, output io.Writer) Log {
 
 	alevel.SetLevel(ParseZapLevel(level))
 	encoderConfig := zap.NewProductionEncoderConfig()
-
+	encoderConfig.CallerKey = "file"
 	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("2006-01-02 15:04:05")
 
 	core := zapcore.NewCore(
