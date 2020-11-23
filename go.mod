@@ -1,4 +1,4 @@
-module loggo
+module github.com/rickiey/loggo
 
 go 1.15
 
