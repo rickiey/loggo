@@ -118,7 +118,7 @@ func NewZapLog(level string, output io.Writer) Log {
 		w,
 		alevel,
 	)
-	return &zapLog{zap.New(core, zap.AddCaller()).Sugar()}
+	return &zapLog{zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1)).Sugar()}
 }
 
 func (z *zapLog) Debug(v ...interface{}) {
