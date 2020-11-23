@@ -26,6 +26,8 @@ type Log interface {
 	Errorf(msg string, v ...interface{})
 	Panic(v ...interface{})
 	Panicf(msg string, v ...interface{})
+	Fatal(v ...interface{})
+	Fatalf(msg string, v ...interface{})
 }
 
 func Debug(v ...interface{})              { logger.Debug(v...) }
@@ -38,6 +40,8 @@ func Error(v ...interface{})              { logger.Error(v...) }
 func Errorf(msg string, v ...interface{}) { logger.Errorf(msg, v...) }
 func Panic(v ...interface{})              { logger.Panic(v...) }
 func Panicf(msg string, v ...interface{}) { logger.Panicf(msg, v...) }
+func Fatal(v ...interface{})              { logger.Fatal(v...) }
+func Fatalf(msg string, v ...interface{}) { logger.Fatalf(msg, v...) }
 
 func NewLogrusLog(level string, output io.Writer) Log {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -100,6 +104,14 @@ func (l *logrusLog) Panicf(msg string, v ...interface{}) {
 	logrus.Panicf(msg, v...)
 }
 
+func (l *logrusLog) Fatal(v ...interface{}) {
+	logrus.Fatal(v...)
+}
+
+func (l *logrusLog) Fatalf(msg string, v ...interface{}) {
+	logrus.Fatalf(msg, v...)
+}
+
 type zapLog struct {
 	*zap.SugaredLogger
 }
@@ -159,6 +171,14 @@ func (z *zapLog) Panic(v ...interface{}) {
 
 func (z *zapLog) Panicf(msg string, v ...interface{}) {
 	z.SugaredLogger.Panicf(msg, v...)
+}
+
+func (z *zapLog) Fatal(v ...interface{}) {
+	z.SugaredLogger.Fatal(v...)
+}
+
+func (z *zapLog) Fatalf(msg string, v ...interface{}) {
+	z.SugaredLogger.Fatalf(msg, v...)
 }
 
 func ParseZapLevel(text string) zapcore.Level {
