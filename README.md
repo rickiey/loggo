@@ -42,3 +42,41 @@ func ConfigLog() {
 }
 
 ```
+
+> 自定义 log, 只需实现 Log 接口
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/rickiey/loggo"
+)
+
+func main() {
+    loggo.SetLog(new(flog))
+    loggo.Info("loggo ...")
+}
+
+type flog struct{}
+
+func (l *flog) Debug(v ...interface{}) {fmt.Println(v...)}
+
+func (l *flog) Debugf(msg string, v ...interface{}) {fmt.Printf(msg, v...)}
+
+func (l *flog) Info(v ...interface{}) {fmt.Println(v...)}
+
+func (l *flog) Infof(msg string, v ...interface{}) {fmt.Printf(msg, v...)}
+
+func (l *flog) Warn(v ...interface{}) {fmt.Println(v...)}
+
+func (l *flog) Warnf(msg string, v ...interface{}) {fmt.Printf(msg, v...)}
+
+func (l *flog) Error(v ...interface{}) {fmt.Println(v...)}
+
+func (l *flog) Errorf(msg string, v ...interface{}) {fmt.Printf(msg, v...)}
+
+func (l *flog) Panic(v ...interface{}) {fmt.Println(v...)}
+
+func (l *flog) Panicf(msg string, v ...interface{}) {fmt.Printf(msg, v...)}
+```
