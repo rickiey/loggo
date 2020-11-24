@@ -7,7 +7,6 @@
 ```go
 
 type Log interface {
-
 	Debug(v ...interface{})
 	Debugf(msg string, v ...interface{})
 	Info(v ...interface{})
@@ -18,6 +17,10 @@ type Log interface {
 	Errorf(msg string, v ...interface{})
 	Panic(v ...interface{})
 	Panicf(msg string, v ...interface{})
+	Fatal(v ...interface{})
+	Fatalf(msg string, v ...interface{})
+	Print(v ...interface{})
+	Println(v ...interface{})
 }
 ```
 
@@ -59,6 +62,8 @@ func main() {
 }
 
 type flog struct{}
+func (l *flog) Print(v ...interface{}) { fmt.Println(v...) }
+func (l *flog) Println(v ...interface{}) { fmt.Println(v...) }
 
 func (l *flog) Debug(v ...interface{}) {fmt.Println(v...)}
 
@@ -79,4 +84,6 @@ func (l *flog) Errorf(msg string, v ...interface{}) {fmt.Printf(msg, v...)}
 func (l *flog) Panic(v ...interface{}) {fmt.Println(v...)}
 
 func (l *flog) Panicf(msg string, v ...interface{}) {fmt.Printf(msg, v...)}
+func (l *flog) Fatal(v ...interface{}) { fmt.Println(v...) }
+func (l *flog) Fatalf(msg string, v ...interface{}) { fmt.Printf(msg, v...) }
 ```

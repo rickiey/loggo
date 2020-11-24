@@ -51,7 +51,9 @@ func Test_fmt(t *testing.T) {
 
 type flog struct{}
 
-func (l *flog) Debug(v ...interface{}) { fmt.Println(v...) }
+func (l *flog) Print(v ...interface{})   { fmt.Println(v...) }
+func (l *flog) Println(v ...interface{}) { fmt.Println(v...) }
+func (l *flog) Debug(v ...interface{})   { fmt.Println(v...) }
 
 func (l *flog) Debugf(msg string, v ...interface{}) { fmt.Printf(msg, v...) }
 
@@ -70,3 +72,5 @@ func (l *flog) Errorf(msg string, v ...interface{}) { fmt.Printf(msg, v...) }
 func (l *flog) Panic(v ...interface{}) { fmt.Println(v...) }
 
 func (l *flog) Panicf(msg string, v ...interface{}) { fmt.Printf(msg, v...) }
+func (l *flog) Fatal(v ...interface{})              { fmt.Println(v...) }
+func (l *flog) Fatalf(msg string, v ...interface{}) { fmt.Printf(msg, v...) }

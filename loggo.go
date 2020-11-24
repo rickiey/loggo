@@ -10,10 +10,10 @@ import (
 )
 
 func init() {
-	logger = NewZapLog("info", os.Stdout)
+	Logger = NewZapLog("info", os.Stdout)
 }
 
-var logger Log
+var Logger Log
 
 type Log interface {
 	Debug(v ...interface{})
@@ -28,20 +28,22 @@ type Log interface {
 	Panicf(msg string, v ...interface{})
 	Fatal(v ...interface{})
 	Fatalf(msg string, v ...interface{})
+	Print(v ...interface{})
+	Println(v ...interface{})
 }
 
-func Debug(v ...interface{})              { logger.Debug(v...) }
-func Debugf(msg string, v ...interface{}) { logger.Debugf(msg, v...) }
-func Info(v ...interface{})               { logger.Info(v...) }
-func Infof(msg string, v ...interface{})  { logger.Infof(msg, v...) }
-func Warn(v ...interface{})               { logger.Warn(v...) }
-func Warnf(msg string, v ...interface{})  { logger.Warnf(msg, v...) }
-func Error(v ...interface{})              { logger.Error(v...) }
-func Errorf(msg string, v ...interface{}) { logger.Errorf(msg, v...) }
-func Panic(v ...interface{})              { logger.Panic(v...) }
-func Panicf(msg string, v ...interface{}) { logger.Panicf(msg, v...) }
-func Fatal(v ...interface{})              { logger.Fatal(v...) }
-func Fatalf(msg string, v ...interface{}) { logger.Fatalf(msg, v...) }
+func Debug(v ...interface{})              { Logger.Debug(v...) }
+func Debugf(msg string, v ...interface{}) { Logger.Debugf(msg, v...) }
+func Info(v ...interface{})               { Logger.Info(v...) }
+func Infof(msg string, v ...interface{})  { Logger.Infof(msg, v...) }
+func Warn(v ...interface{})               { Logger.Warn(v...) }
+func Warnf(msg string, v ...interface{})  { Logger.Warnf(msg, v...) }
+func Error(v ...interface{})              { Logger.Error(v...) }
+func Errorf(msg string, v ...interface{}) { Logger.Errorf(msg, v...) }
+func Panic(v ...interface{})              { Logger.Panic(v...) }
+func Panicf(msg string, v ...interface{}) { Logger.Panicf(msg, v...) }
+func Fatal(v ...interface{})              { Logger.Fatal(v...) }
+func Fatalf(msg string, v ...interface{}) { Logger.Fatalf(msg, v...) }
 
 func NewLogrusLog(level string, output io.Writer) Log {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -59,10 +61,18 @@ func NewLogrusLog(level string, output io.Writer) Log {
 }
 
 func SetLog(l Log) {
-	logger = l
+	Logger = l
 }
 
 type logrusLog struct{}
+
+func (l *logrusLog) Print(v ...interface{}) {
+	logrus.Print(v...)
+}
+
+func (l *logrusLog) Println(v ...interface{}) {
+	logrus.Println(v...)
+}
 
 func (l *logrusLog) Debug(v ...interface{}) {
 	logrus.Debug(v...)
@@ -131,6 +141,14 @@ func NewZapLog(level string, output io.Writer) Log {
 		alevel,
 	)
 	return &zapLog{zap.New(core, zap.AddCaller(), zap.AddCallerSkip(2)).Sugar()}
+}
+
+func (z *zapLog) Print(v ...interface{}) {
+	z.SugaredLogger.Info(v...)
+}
+
+func (z *zapLog) Println(v ...interface{}) {
+	z.SugaredLogger.Info(v...)
 }
 
 func (z *zapLog) Debug(v ...interface{}) {
